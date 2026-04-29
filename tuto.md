@@ -12,10 +12,12 @@ Une présentation associée à ce tutoriel est disponible [ici](https://olivier.
 
 Utiliser un CMS basé sur Git avec un workflow DevOps (approche Jamstack) présente des avantages majeurs par rapport aux CMS traditionnels (comme WordPress) :
 
-*   **Sécurité maximale :** Il n'y a pas de base de données ou de serveur d'application exposé en production. Le site n'est composé que de fichiers statiques (HTML, CSS, JS), ce qui réduit drastiquement la surface d'attaque.
-*   **Performances inégalées :** Les pages étant pré-générées lors du build, elles sont servies quasi instantanément par un CDN. Les Core Web Vitals s'en trouvent grandement améliorés.
+*   **Sécurité maximale :** Il n'y a pas de base de données ou de serveur d'application exposé en production. Le site n'est composé que de fichiers statiques (HTML, CSS, JS), ce qui réduit drastiquement la surface d'attaque. Dans un monde où les IAs sont capables de trouver aisément des vulnérabiltiés dans le code, le secret est de réduire la surface d'attaque au maximum en fournissant des architectures sécurisées au design. 
+*   **Performances inégalées :** Les pages étant pré-générées lors du build, elles sont servies quasi instantanément par un CDN. Les [Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals?hl=fr) s'en trouvent grandement améliorés.
 *   **Versionning complet (Git comme source de vérité) :** Le code ET le contenu vivent dans le même dépôt Git. Chaque modification de contenu est un commit. On peut facilement revenir en arrière, travailler sur des branches, et faire des revues (Pull Requests) sur des articles.
 *   **Expérience développeur (DX) et hébergement :** L'écosystème s'intègre parfaitement avec les pipelines CI/CD. L'hébergement de fichiers statiques est souvent gratuit ou très peu coûteux.
+
+
 
 ---
 
@@ -24,9 +26,9 @@ Utiliser un CMS basé sur Git avec un workflow DevOps (approche Jamstack) prése
 Pour ce projet, nous utilisons des outils modernes qui se complètent parfaitement :
 
 *   **Astro :** Le framework au cœur du projet. Il excelle dans la création de sites riches en contenu. Il génère du HTML statique par défaut tout en permettant d'injecter des composants interactifs ("Astro Islands").
-*   **VueJS :** Utilisé pour les composants nécessitant de la réactivité côté client (lecteur vidéo complexe, recherche, filtrage).
-*   **Tailwind CSS :** Un framework CSS utilitaire pour styliser nos composants extrêmement rapidement sans quitter nos fichiers de structure.
 *   **TypeScript :** Apporte la sécurité du typage, réduisant les bugs et améliorant l'autocomplétion (crucial quand on manipule des modèles de données complexes).
+*   **VueJS :** Utilisé pour les composants nécessitant de la réactivité côté client (lecteur vidéo complexe, recherche, filtrage). Avec son modèle de développement élégant pour les composants Web et son support de Typescript, il permet de créer des composants maintenables et testables.
+*   **Tailwind CSS :** Un framework CSS utilitaire pour styliser nos composants extrêmement rapidement sans quitter nos fichiers de structure.
 *   **DecapCMS :** Un CMS open-source qui se branche directement sur notre dépôt Git. Il offre une interface d'administration claire pour les rédacteurs, tout en sauvegardant le contenu en fichiers Markdown/MDX.
 
 ---
@@ -41,7 +43,7 @@ npm create astro@latest my-project -- --add vue --add mdx --add tailwind --add p
 cd my-project
 ```
 
-*(Note : Astro vous demandera si vous souhaitez installer les dépendances et initialiser un dépôt Git. Acceptez.)*
+*(Note : Astro vous demandera si vous souhaitez installer les dépendances et initialiser un dépôt Git. Acceptez. Et prenez le template par défaut.)*
 
 ---
 
@@ -51,7 +53,7 @@ Une fois le projet créé, quelques ajustements sont nécessaires pour faire coh
 
 ### Configuration d'Astro
 
-Dans le fichier `astro.config.mjs`, ajoutez la rétrocompatibilité pour les collections (utile pour certaines intégrations) :
+Dans le fichier `astro.config.mjs`, ajoutez la rétrocompatibilité pour les collections (utile pour certaines intégrations en particulier quand on utilise les LLMs pour la génération des modèles de données. En effet, Astro a changé la façon de définir son modèle de données depuis la version 6 mais la plupart des LLMs du marché ont été entraînés sur l'ancienne documentation.) :
 
 ```javascript
 import { defineConfig } from 'astro/config';
@@ -61,9 +63,11 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   integrations: [mdx(), vue()],
+  // c'est ici que l'on ajoute le code
   legacy: {
     collectionsBackwardsCompat: true,
   },
+  ///
   vite: {
     plugins: [tailwindcss()]
   }
@@ -78,7 +82,7 @@ Pour styliser facilement le contenu Markdown généré par notre CMS, nous utili
 npm install -D @tailwindcss/typography
 ```
 
-Si vous utilisez Tailwind v4 (avec Vite), ajoutez ceci dans votre fichier `src/styles/global.css` :
+Ajoutez ceci dans votre fichier `src/styles/global.css` :
 
 ```css
 @import "tailwindcss";
@@ -95,28 +99,8 @@ import "../styles/global.css";
 
 ---
 
-## 5. Gestion du contenu : MDX et DecapCMS
+## 5. Gestion du contenu : DecapCMS
 
-### Permettre le rendu MDX avancé avec Vue
-
-Parfois, vous aurez besoin de rendre dynamiquement du contenu Markdown ou MDX stocké dans des champs texte. Pour cela, nous pouvons créer un composant Vue dédié.
-
-```bash
-npm install markdown-it highlight.js @types/markdown-it
-```
-
-*Exemple d'utilisation dans Astro :* Si vous créez un composant [MdxContentEnhanced.vue](https://github.com/demoweb-irisa/demoweb-irisa.github.io/blob/main/src/components/MdxContentEnhanced.vue), vous pourrez l'utiliser ainsi dans vos fichiers `.astro` :
-
-```astro
-<MdxContentEnhanced 
-  content={video.body} 
-  enableCopy={true}
-  enableAnchors={true}
-  enableHighlight={true}
-  client:load
-/>
-```
-*(Le paramètre `client:load` indique à Astro de charger l'interactivité VueJS dans le navigateur).*
 
 ### Connecter DecapCMS pour les non-informaticiens
 
@@ -214,6 +198,29 @@ jobs:
 ```
 
 **Important :** Dans les paramètres de votre dépôt GitHub (Settings > Pages), assurez-vous que la source de construction ("Build and deployment") est réglée sur **"GitHub Actions"**.
+
+## Permettre le rendu MDX avancé avec Vue
+
+Parfois, vous aurez besoin de rendre dynamiquement du contenu Markdown ou MDX stocké dans des champs texte. Pour cela, nous pouvons créer un composant Vue dédié.
+
+```bash
+npm install markdown-it highlight.js @types/markdown-it
+```
+
+*Exemple d'utilisation dans Astro :* Si vous créez un composant [MdxContentEnhanced.vue](https://github.com/demoweb-irisa/demoweb-irisa.github.io/blob/main/src/components/MdxContentEnhanced.vue), vous pourrez l'utiliser ainsi dans vos fichiers `.astro` :
+
+```astro
+<MdxContentEnhanced 
+  content={video.body} 
+  enableCopy={true}
+  enableAnchors={true}
+  enableHighlight={true}
+  client:load
+/>
+```
+*(Le paramètre `client:load` indique à Astro de charger l'interactivité VueJS dans le navigateur).*
+
+
 
 ## Conclusion
 
