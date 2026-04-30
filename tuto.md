@@ -12,13 +12,13 @@ Une présentation associée à ce tutoriel est disponible [ici](https://olivier.
 
 Utiliser un CMS basé sur Git avec un workflow DevOps (approche Jamstack) présente des avantages majeurs par rapport aux CMS traditionnels (comme WordPress) :
 
-*   **Sécurité maximale :** Il n'y a pas de base de données ou de serveur d'application exposé en production. Le site n'est composé que de fichiers statiques (HTML, CSS, JS), ce qui réduit drastiquement la surface d'attaque. Dans un monde où les IAs sont capables de trouver aisément des vulnérabiltiés dans le code, le secret est de réduire la surface d'attaque au maximum en fournissant des architectures sécurisées au design. 
+*   **Sécurité maximale :** Il n'y a pas de base de données ou de serveur d'application exposé en production. Le site n'est composé que de fichiers statiques (HTML, CSS, JS), ce qui réduit drastiquement la surface d'attaque. Dans un monde où les IAs sont capables de trouver aisément des vulnérabilités dans le code, le secret est de réduire la surface d'attaque au maximum en fournissant des architectures sécurisées au design. 
 *   **Performances inégalées :** Les pages étant pré-générées lors du build, elles sont servies quasi instantanément par un CDN. Les [Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals?hl=fr) s'en trouvent grandement améliorés.
 *   **Versionning complet (Git comme source de vérité) :** Le code ET le contenu vivent dans le même dépôt Git. Chaque modification de contenu est un commit. On peut facilement revenir en arrière, travailler sur des branches, et faire des revues (Pull Requests) sur des articles.
 *   **Expérience développeur (DX) et hébergement :** L'écosystème s'intègre parfaitement avec les pipelines CI/CD. L'hébergement de fichiers statiques est souvent gratuit ou très peu coûteux.
 
 
-:warning: Le principale problème généralement pour ce type d'approche est l'absence de connaissance sur git et/ou Markdown pour les utilisateurs finaux ayant en charge l'édition du contenu. C'est la que [DecapCMS](https://decapcms.org/) vient à la rescousse. 
+:warning: Le principal problème généralement pour ce type d'approche est l'absence de connaissance sur git et/ou Markdown pour les utilisateurs finaux ayant en charge l'édition du contenu. C'est la que [DecapCMS](https://decapcms.org/) vient à la rescousse. 
 
 
 ---
@@ -101,13 +101,12 @@ import "../styles/global.css";
 
 ---
 
-## 5. Gestion du contenu : DecapCMS
+### Connecter DecapCMS pour les éditeurs de contenu "non-informaticiens" (Sans connaissance git ou MD)
 
 
-### Connecter DecapCMS pour les non-informaticiens
+DecapCMS (anciennement NetlifyCMS) va nous permettre de modifier notre contenu Markdown via une interface d'administration claire, sans avoir à toucher au code source.
 
-Pour permettre à vos utilisateurs de modifier le contenu sans toucher au code, installez DecapCMS :
-
+Tout d'abord, installez le package :
 ```bash
 npm install decap-cms-app
 ```
@@ -115,7 +114,59 @@ npm install decap-cms-app
 La mise en place se fait généralement en créant un dossier `public/admin/` contenant un fichier `index.html` (qui charge l'application) et un fichier `config.yml` (qui définit vos champs).
 *(Voir la [documentation officielle d'Astro sur DecapCMS](https://docs.astro.build/fr/guides/cms/decap-cms/)).*
 
-**Astuce :** Pour tester l'authentification DecapCMS en local sans déployer, vous pouvez utiliser un proxy local comme [decap-proxy](https://github.com/sterlingwes/decap-proxy).
+
+
+Pour que le CMS fonctionne, nous devons créer une interface d'administration statique. Dans votre dossier `public`, créez un sous-dossier `admin/` et ajoutez-y les deux fichiers suivants :
+
+**1. Le fichier `public/admin/index.html`**
+C'est le point d'entrée du CMS. Il va charger l'interface React de DecapCMS.
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Administration - DecapCMS</title>
+  </head>
+  <body>
+    <!-- Script qui charge l'application DecapCMS -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  </body>
+</html>
+```
+
+**2. Le fichier `public/admin/config.yml`**
+C'est ici que nous définissons comment le CMS interagit avec notre dépôt Git et la structure de nos données.
+```yaml
+backend:
+  name: git-gateway # Permet la connexion avec GitHub via Netlify/Decap
+  branch: main      # Branche sur laquelle les commits seront poussés
+
+# Active le flux de travail brouillon / en relecture / prêt
+publish_mode: editorial_workflow
+
+# Dossier où seront stockées les images uploadées depuis le CMS
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  # C'est ici que vous définirez vos modèles de données (voir la règle des 3 fichiers ci-dessous)
+  - name: "blog"
+    label: "Articles de Blog"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Corps du texte", name: "body", widget: "markdown" }
+```
+Une fois votre site déployé, vous pourrez accéder à l'interface en tapant `votresite.com/admin/`.
+
+
+**Astuce :** Pour utiliser l'authentification DecapCMS depuis un CMS comme githubpage, vous pouvez utiliser un proxy sous forme de FaaS comme [decap-proxy](https://github.com/sterlingwes/decap-proxy).
+
 
 ---
 
@@ -201,9 +252,14 @@ jobs:
 
 **Important :** Dans les paramètres de votre dépôt GitHub (Settings > Pages), assurez-vous que la source de construction ("Build and deployment") est réglée sur **"GitHub Actions"**.
 
-## Permettre le rendu MDX avancé avec Vue
+### Rendu Markdown ou MDX dynamique avec VueJS
 
-Parfois, vous aurez besoin de rendre dynamiquement du contenu Markdown ou MDX stocké dans des champs texte. Pour cela, nous pouvons créer un composant Vue dédié.
+**Pourquoi utiliser VueJS pour le Markdown ?**
+Astro gère nativement et brillamment le Markdown et le MDX grâce à son composant natif `<Content />`. C'est la méthode recommandée pour afficher les articles générés dans `src/content/`. 
+
+Cependant, dans des architectures headless ou dynamiques, il arrive souvent que l'on récupère du contenu Markdown **brut** sous forme de chaîne de caractères (par exemple via un champ texte spécifique d'une API externe, ou une donnée injectée dynamiquement côté client). Dans ce cas précis, le `<Content />` d'Astro, qui fonctionne à la compilation, ne suffit plus.
+
+Pour palier à cela, nous pouvons créer un composant Vue dédié qui utilisera la librairie `markdown-it` pour parser ce texte brut à la volée.
 
 ```bash
 npm install markdown-it highlight.js @types/markdown-it
@@ -211,14 +267,20 @@ npm install markdown-it highlight.js @types/markdown-it
 
 *Exemple d'utilisation dans Astro :* Si vous créez un composant [MdxContentEnhanced.vue](https://github.com/demoweb-irisa/demoweb-irisa.github.io/blob/main/src/components/MdxContentEnhanced.vue), vous pourrez l'utiliser ainsi dans vos fichiers `.astro` :
 
+**Comment l'utiliser dans un fichier Astro ?**
+Si vous récupérez une chaîne de caractères Markdown brute depuis votre CMS, vous pouvez l'afficher ainsi :
+
 ```astro
-<MdxContentEnhanced 
-  content={video.body} 
-  enableCopy={true}
-  enableAnchors={true}
-  enableHighlight={true}
-  client:load
-/>
+---
+import MdxContentEnhanced from '../components/MdxContentEnhanced.vue';
+const rawMarkdownString = "**Bonjour**, ceci est un *test* récupéré dynamiquement !";
+---
+
+<!-- Utilisation du composant client Vue -->
+<MdxContentEnhanced content={rawMarkdownString} client:load />
+```
+
+
 ```
 *(Le paramètre `client:load` indique à Astro de charger l'interactivité VueJS dans le navigateur).*
 
@@ -232,7 +294,7 @@ En associant la robustesse et les performances de la **Jamstack** (Astro, Vue, T
 # Quelques slides de cours pour aller plus loin
 
 
-- [**Introduction à la notion de Web Enginnering**](https://olivier.barais.fr/web.intro)
+- [**Introduction à la notion de Web Engineering**](https://olivier.barais.fr/web.intro)
 - [js](https://olivier.barais.fr/web.javascript)
 - [nodejs](https://olivier.barais.fr/web.nodejs/)
 - [**dev tooling**](https://olivier.barais.fr/web.tooling/)
@@ -241,6 +303,6 @@ En associant la robustesse et les performances de la **Jamstack** (Astro, Vue, T
 - [react](https://olivier.barais.fr/web.react/)
 - [**vuejs**](https://olivier.barais.fr/web.vuejs/)
 - [test](https://olivier.barais.fr/web.test/)
-- [**jamestack**](https://olivier.barais.fr/jamstack/)
+- [**Jamstack**](https://olivier.barais.fr/jamstack/)
 - [advanced feature](https://olivier.barais.fr/web.advanced/)
 - [conclusion](https://olivier.barais.fr/web.conclusion/)
