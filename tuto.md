@@ -101,7 +101,7 @@ import "../styles/global.css";
 
 ---
 
-### Connecter DecapCMS pour les éditeurs de contenu "non-informaticiens" (Sans connaissance git ou MD)
+### 5. Connecter DecapCMS pour les éditeurs de contenu "non-informaticiens" (Sans connaissance git ou MD)
 
 
 DecapCMS (anciennement NetlifyCMS) va nous permettre de modifier notre contenu Markdown via une interface d'administration claire, sans avoir à toucher au code source.
@@ -252,7 +252,7 @@ jobs:
 
 **Important :** Dans les paramètres de votre dépôt GitHub (Settings > Pages), assurez-vous que la source de construction ("Build and deployment") est réglée sur **"GitHub Actions"**.
 
-### Rendu Markdown ou MDX dynamique avec VueJS
+### 8. Rendu Markdown ou MDX dynamique avec VueJS
 
 **Pourquoi utiliser VueJS pour le Markdown ?**
 Astro gère nativement et brillamment le Markdown et le MDX grâce à son composant natif `<Content />`. C'est la méthode recommandée pour afficher les articles générés dans `src/content/`. 
@@ -281,7 +281,6 @@ const rawMarkdownString = "**Bonjour**, ceci est un *test* récupéré dynamique
 ```
 
 
-```
 *(Le paramètre `client:load` indique à Astro de charger l'interactivité VueJS dans le navigateur).*
 
 
