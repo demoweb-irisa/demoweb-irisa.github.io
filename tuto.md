@@ -1,7 +1,7 @@
 # Tutoriel : Créer un CMS sur mesure avec Astro, VueJS, DecapCMS et booster son développement avec l'IA
 
 
-{:toc}
+[TOC]
 
 ---
 
