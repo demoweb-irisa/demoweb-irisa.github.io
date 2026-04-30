@@ -1,7 +1,23 @@
 # Tutoriel : Créer un CMS sur mesure avec Astro, VueJS, DecapCMS et booster son développement avec l'IA
 
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
-[TOC]
+   * [1. Rappel : Pourquoi choisir l'approche Jamstack ?](#1-rappel-pourquoi-choisir-lapproche-jamstack-)
+   * [2. La Stack Technique : L'équipe de choc](#2-la-stack-technique-léquipe-de-choc)
+   * [3. Initialisation du projet (Quick Start)](#3-initialisation-du-projet-quick-start)
+   * [4. Configuration et ajustements](#4-configuration-et-ajustements)
+      + [Configuration d'Astro](#configuration-dastro)
+      + [Configuration de Tailwind pour le typographie](#configuration-de-tailwind-pour-le-typographie)
+      + [5. Connecter DecapCMS pour les éditeurs de contenu "non-informaticiens" (Sans connaissance git ou MD)](#5-connecter-decapcms-pour-les-éditeurs-de-contenu-non-informaticiens-sans-connaissance-git-ou-md)
+   * [6. La Méthodologie "IA" : Générer son architecture avec les LLMs](#6-la-méthodologie-ia-générer-son-architecture-avec-les-llms)
+      + [Étape A : Modéliser la donnée](#étape-a-modéliser-la-donnée)
+      + [Étape B : Générer la partie visuelle](#étape-b-générer-la-partie-visuelle)
+      + [Étape C : Générer les composants techniques complexes](#étape-c-générer-les-composants-techniques-complexes)
+   * [7. Déploiement automatisé sur GitHub Pages](#7-déploiement-automatisé-sur-github-pages)
+      + [8. Rendu Markdown ou MDX dynamique avec VueJS](#8-rendu-markdown-ou-mdx-dynamique-avec-vuejs)
+   * [Conclusion](#conclusion)
+- [Quelques slides de cours pour aller plus loin](#quelques-slides-de-cours-pour-aller-plus-loin)
+
 
 ---
 
