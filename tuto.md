@@ -18,6 +18,8 @@ Utiliser un CMS basé sur Git avec un workflow DevOps (approche Jamstack) prése
 *   **Expérience développeur (DX) et hébergement :** L'écosystème s'intègre parfaitement avec les pipelines CI/CD. L'hébergement de fichiers statiques est souvent gratuit ou très peu coûteux.
 
 
+:warning: Le principale problème généralement pour ce type d'approche est l'absence de connaissance sur git et/ou Markdown pour les utilisateurs finaux ayant en charge l'édition du contenu. C'est la que [DecapCMS](https://decapcms.org/) vient à la rescousse. 
+
 
 ---
 
@@ -25,11 +27,11 @@ Utiliser un CMS basé sur Git avec un workflow DevOps (approche Jamstack) prése
 
 Pour ce projet, nous utilisons des outils modernes qui se complètent parfaitement :
 
-*   **Astro :** Le framework au cœur du projet. Il excelle dans la création de sites riches en contenu. Il génère du HTML statique par défaut tout en permettant d'injecter des composants interactifs ("Astro Islands").
+*   **Astro :** Le framework au cœur du projet. Il excelle dans la création de sites riches en contenu. Il génère du HTML statique par défaut tout en permettant d'injecter des composants interactifs ("[Astro Islands](https://docs.astro.build/fr/concepts/islands/)").
 *   **TypeScript :** Apporte la sécurité du typage, réduisant les bugs et améliorant l'autocomplétion (crucial quand on manipule des modèles de données complexes).
 *   **VueJS :** Utilisé pour les composants nécessitant de la réactivité côté client (lecteur vidéo complexe, recherche, filtrage). Avec son modèle de développement élégant pour les composants Web et son support de Typescript, il permet de créer des composants maintenables et testables.
 *   **Tailwind CSS :** Un framework CSS utilitaire pour styliser nos composants extrêmement rapidement sans quitter nos fichiers de structure.
-*   **DecapCMS :** Un CMS open-source qui se branche directement sur notre dépôt Git. Il offre une interface d'administration claire pour les rédacteurs, tout en sauvegardant le contenu en fichiers Markdown/MDX.
+*   **DecapCMS :** Un CMS open-source qui se branche directement sur notre dépôt Git. Il offre une interface d'administration claire pour les rédacteurs (sans besoin d'avoir des connaissances en Markdown ou Git), tout en sauvegardant le contenu en fichiers Markdown/MDX.
 
 ---
 
@@ -138,7 +140,7 @@ Plutôt que d'écrire ces trois fichiers à la main, utilisez ce prompt :
 
 ### Étape B : Générer la partie visuelle
 
-Une fois vos données structurées, demandez à l'IA de construire vos maquettes et vos composants. Assurez-vous d'avoir bien compris le concept de l'architecture "Astro Islands" pour guider l'IA correctement.
+Une fois vos données structurées, demandez à l'IA de construire vos maquettes et vos composants. Assurez-vous d'avoir bien compris le concept de l'architecture "[Astro Islands](https://docs.astro.build/fr/concepts/islands/)" pour guider l'IA correctement et que vous avez de bonnes bases sur la notion de [composant Web](https://www.ionos.fr/digitalguide/sites-internet/developpement-web/web-components/) et l'utilisation de [VueJS](https://vuejs.org/) ou autre framework de composants Web.
 
 > **Prompt :**
 > *"J'utilise Tailwind CSS. Peux-tu me proposer un joli layout principal `src/layouts/Layout.astro` et une page `src/pages/index.astro` qui intègre un composant de listing de vidéos `VideoCard.vue`. Donne-moi le code de ces 3 fichiers. L'interface doit être moderne, avec un mode sombre. Donne-moi aussi un exemple concret d'un fichier Markdown de vidéo (`.md`) correspondant au modèle de données."*
@@ -225,3 +227,20 @@ npm install markdown-it highlight.js @types/markdown-it
 ## Conclusion
 
 En associant la robustesse et les performances de la **Jamstack** (Astro, Vue, Tailwind) avec l'autonomie éditoriale de **DecapCMS**, vous obtenez une base de projet solide et ultra-rapide. L'intégration des **LLMs** comme assistants de développement (pour garantir la cohérence entre le config.ts, le config.yml et les types) transforme des heures de configuration laborieuse en quelques minutes de supervision, décuplant ainsi votre productivité !
+
+
+# Quelques slides de cours pour aller plus loin
+
+
+- [**Introduction à la notion de Web Enginnering**](https://olivier.barais.fr/web.intro)
+- [js](https://olivier.barais.fr/web.javascript)
+- [nodejs](https://olivier.barais.fr/web.nodejs/)
+- [**dev tooling**](https://olivier.barais.fr/web.tooling/)
+- [**Typescript**](https://olivier.barais.fr/web.typescript)
+- [**Web component and angular**](https://olivier.barais.fr/web.angular/)
+- [react](https://olivier.barais.fr/web.react/)
+- [**vuejs**](https://olivier.barais.fr/web.vuejs/)
+- [test](https://olivier.barais.fr/web.test/)
+- [**jamestack**](https://olivier.barais.fr/jamstack/)
+- [advanced feature](https://olivier.barais.fr/web.advanced/)
+- [conclusion](https://olivier.barais.fr/web.conclusion/)
