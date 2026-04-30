@@ -8,7 +8,7 @@
    * [4. Configuration et ajustements](#4-configuration-et-ajustements)
       + [Configuration d'Astro](#configuration-dastro)
       + [Configuration de Tailwind pour le typographie](#configuration-de-tailwind-pour-le-typographie)
-      + [5. Connecter DecapCMS pour les éditeurs de contenu "non-informaticiens" (Sans connaissance git ou MD)](#5-connecter-decapcms-pour-les-éditeurs-de-contenu-non-informaticiens-sans-connaissance-git-ou-md)
+   * [5. Connecter DecapCMS pour les éditeurs de contenu "non-informaticiens" (Sans connaissance git ou MD)](#5-connecter-decapcms-pour-les-éditeurs-de-contenu-non-informaticiens-sans-connaissance-git-ou-md)
    * [6. La Méthodologie "IA" : Générer son architecture avec les LLMs](#6-la-méthodologie-ia-générer-son-architecture-avec-les-llms)
       + [Étape A : Modéliser la donnée](#étape-a-modéliser-la-donnée)
       + [Étape B : Générer la partie visuelle](#étape-b-générer-la-partie-visuelle)
@@ -122,7 +122,7 @@ import "../styles/global.css";
 
 ---
 
-### 5. Connecter DecapCMS pour les éditeurs de contenu "non-informaticiens" (Sans connaissance git ou MD)
+## 5. Connecter DecapCMS pour les éditeurs de contenu "non-informaticiens" (Sans connaissance git ou MD)
 
 
 DecapCMS (anciennement NetlifyCMS) va nous permettre de modifier notre contenu Markdown via une interface d'administration claire, sans avoir à toucher au code source.
