@@ -14,7 +14,7 @@
       + [Étape B : Générer la partie visuelle](#étape-b-générer-la-partie-visuelle)
       + [Étape C : Générer les composants techniques complexes](#étape-c-générer-les-composants-techniques-complexes)
    * [7. Déploiement automatisé sur GitHub Pages](#7-déploiement-automatisé-sur-github-pages)
-      + [8. Rendu Markdown ou MDX dynamique avec VueJS](#8-rendu-markdown-ou-mdx-dynamique-avec-vuejs)
+   + [8. Rendu Markdown ou MDX dynamique avec VueJS](#8-rendu-markdown-ou-mdx-dynamique-avec-vuejs)
    * [Conclusion](#conclusion)
 - [Quelques slides de cours pour aller plus loin](#quelques-slides-de-cours-pour-aller-plus-loin)
 
@@ -273,7 +273,7 @@ jobs:
 
 **Important :** Dans les paramètres de votre dépôt GitHub (Settings > Pages), assurez-vous que la source de construction ("Build and deployment") est réglée sur **"GitHub Actions"**.
 
-### 8. Rendu Markdown ou MDX dynamique avec VueJS
+## 8. Rendu Markdown ou MDX dynamique avec VueJS
 
 **Pourquoi utiliser VueJS pour le Markdown ?**
 Astro gère nativement et brillamment le Markdown et le MDX grâce à son composant natif `<Content />`. C'est la méthode recommandée pour afficher les articles générés dans `src/content/`. 
