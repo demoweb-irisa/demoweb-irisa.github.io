@@ -1,5 +1,10 @@
 # Tutoriel : Créer un CMS sur mesure avec Astro, VueJS, DecapCMS et booster son développement avec l'IA
 
+
+{:toc}
+
+---
+
 La création d'un site web performant, facilement éditable par des non-techniciens et rapide à développer est le Saint Graal du développement web moderne. 
 
 Dans ce tutoriel, nous allons voir comment mettre en place une architecture **Jamstack** redoutable en utilisant **Astro, VueJS, TypeScript, Tailwind CSS et DecapCMS**. Mieux encore, nous allons découvrir une méthodologie pour **utiliser les LLMs (ChatGPT, Claude, etc.)** afin d'automatiser la génération de nos modèles de données et de nos composants.
